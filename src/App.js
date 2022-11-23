@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useState } from "react";
+import Service from "./components/Service";
+import Home from "./components/Home";
+import Contact from "./components/Contact";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { contextMain } from "./components/Context";
 
 function App() {
+  const [isDark, setIsDark] = useState(false);
+
+  const darkMode = () => {
+    setIsDark(!isDark);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <contextMain.Provider value={{ isDark, darkMode }}>
+          <p>Mode changed to {isDark ? "Dark" : "Light"}</p>
+          <div className={isDark ? "dark" : ""}>
+            <Routes>
+              <Route index element={<Home />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/service" element={<Service />} />
+            </Routes>
+          </div>
+        </contextMain.Provider>
+      </BrowserRouter>
     </div>
   );
 }
